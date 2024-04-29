@@ -1,4 +1,4 @@
-# Task - 12 => Harry-Potter-Characters-API
+# Task - 12-B => Harry-Potter-Characters-API :
 
 <h4>This repo contains a task, getting available details of an each and every characters from the world of wizardry. Some tools and programming languages are used to built this. Which are : </h4>
 
