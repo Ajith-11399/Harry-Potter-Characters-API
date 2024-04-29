@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  font-family: "Exo", sans-serif;
+  font-style: normal;
+}
+
+.card-img-top {
+  width: 75% !important;
+  height: 330px !important;
+  margin: 10% 0px 0px 12% !important;
+  border-radius: 15px !important;
+  box-shadow: 1px 20px 20px 1px !important;
+}
