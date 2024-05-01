@@ -1,7 +1,7 @@
 function element(tag, className, id, text) {
   const tags = document.createElement(tag);
-  tags.id = id;
   tags.classList = className;
+  tags.id = id;
   tags.innerHTML = text;
   return tags;
 }
@@ -11,72 +11,64 @@ const h1 = element(
   "h1",
   "text-center mt-5 mb-5",
   "title",
-  "Database - The Wizarding World"
+  "Pocket Monsters(Pokemon)"
 );
-const row = element("div", "row", "", "");
+const p = element(
+  "p",
+  "text-center",
+  "para",
+  "It's a collection of Pokemons. In this database, some pokemons' data are missed and unknown. Don't worry i will update sooner."
+);
+const row = element(
+  "div",
+  "row align-items-center justify-content-center",
+  "",
+  ""
+);
 
-const api = fetch("https://hp-api.onrender.com/api/characters");
+const api = fetch(
+  `https://api.pokemontcg.io/v2/cards?apiKey=09d37829-10f6-4139-907f-2320952deca3`
+);
 api
-  .then((data) => data.json())
+  .then((response) => response.json())
   .then((ele) => {
-    for (let i = 0; i < ele.length; i++) {
+    const cards = ele.data;
+    cards.sort(
+      (a, b) => a.nationalPokedexNumbers[0] - b.nationalPokedexNumbers[0]
+    );
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      // console.log(card.images.small);
       const box = document.createElement("div");
-      box.classList = "col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3 mb-2";
+      box.classList = "col-lg-6 col-md-12 col-sm-12 mt-2 mb-4";
       box.innerHTML = `
-        <div class="card">
+        <div class="card bg-dark">
             <div class="card-header bg-primary">
-                <h5 class="text-center text-white pt-2">${ele[i].name}</h5>
+                <h5 class="text-center text-gold">${card.name}</h5>
             </div>
-            <div class="img-box mb-3">
-                <img class="card-img-top" src="${ele[i].image}" alt="">
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered border-primary">
-                    <thead>
-                        <tr>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">House</th>
-                            <td>${ele[i].house}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Date of Birth</th>
-                            <td>${ele[i].dateOfBirth}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Gender</th>
-                            <td>${ele[i].gender}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Ancestry</th>
-                            <td>${ele[i].ancestry}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Wand Wood</th>
-                            <td>${ele[i].wand.wood}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Wand Core</th>
-                            <td>${ele[i].wand.core}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Patronous</th>
-                            <td>${ele[i].patronous}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Role potrayed by</th>
-                            <td>${ele[i].actor}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="row align-items-center justify-content-between d-flex flex-row">
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <img src="${card.images.small}" class="card-img-top" alt="${card.name}" class="img-fluid">
+                </div>
+                <div class="col-lg-7 col-md-6 col-sm-6">
+                    <div class="card-body text-start">
+                        <h5 class="text-gold">Type : ${card.types}</h5>
+                        <h5 class="text-gold">Card Series : ${card.set.series}</h5>
+                        <h5 class="text-gold">Rarity  : ${card.rarity}</h5>
+                        <p class="text-gold"><span class="bb-gold mt-5">${card.name}'s fact :</span> ${card.flavorText}</p>
+                    </div>
+                </div>
             </div>
         </div>
-        `;
+      `;
+
       row.appendChild(box);
     }
+    container.appendChild(h1);
+    container.appendChild(p);
+    container.appendChild(row);
+    document.body.append(container);
+  })
+  .catch((error) => {
+    console.error("Error fetching data:", error);
   });
-container.appendChild(h1);
-container.appendChild(row);
-document.body.append(container);
